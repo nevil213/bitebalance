@@ -9,6 +9,7 @@ import LoginDialog from './components/RegisterDialog';
 import HomePage from './components/HomePage';
 import Register from './pages/Register';
 import Footer from './components/Footer';
+import StaffDashboard from './pages/StaffDashboard';
 
 function App() {
 
@@ -21,7 +22,9 @@ function App() {
     <Routes>
     <Route path="/" element={isLoggedIn?<HomePage />:<Register/>} />
     <Route path="*" element={<NotFound />} />
+    <Route path="/dashboard" element={<StaffDashboard />} />
     {/* <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <CustomerRegister />} /> */}
+
     </Routes>
     <Footer/>
   </BrowserRouter>

@@ -8,7 +8,7 @@ function Header() {
       <div className="container mx-auto px-4 py-2 flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <img src="./images/logo.png" alt="Logo" className="h-8 w-auto" />
-          <div className="text-xl font-bold">Name</div>
+          <div className="text-xl font-bold">BiteBalance</div>
         </div>
         <div className="hidden md:flex space-x-4">
           <a href="#dashboard" className="hover:text-gray-700">Dashboard</a>
