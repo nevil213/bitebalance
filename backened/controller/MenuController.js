@@ -15,15 +15,17 @@ exports.getmenu = async (req, res) => {
 
 
 exports.savedish = async (req, res) => {
+  console.log(req.body);
     try {
-        // const data = req.body;
+        const data = req.body;
         const newRecipe = await Recipe.create(
-        // {
-        //     // dishName: data.dishName,
-        //     // ingredients: data.ingredients,
-        //     // price: data.price,
-        // }
-         req.body);
+        {
+            dishName: data.dishName,
+            ingredients: data.ingredients[0],
+            price: data.price,
+        });
+         console.log(newRecipe);
+
         const newMenu = await Menu.create(
         {
             name: req.body.dishName,
@@ -33,6 +35,7 @@ exports.savedish = async (req, res) => {
     
       res.status(200).json(newRecipe);
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: error.message });
     }
   };

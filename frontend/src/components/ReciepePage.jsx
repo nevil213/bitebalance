@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 
 const RecipeForm = () => {
   const [dishName, setDishName] = useState("");
   const [ingredients, setIngredients] = useState([
-    { ingredientName: "", quantity: "" },
+    { ingredientName: "", quantity: "", unit:"" },
   ]);
   const [price, setPrice] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, { ingredientName: "", quantity: "" }]);
+    setIngredients([
+      ...ingredients,
+      { ingredientName: "", quantity: "", unit: "" },
+    ]);
   };
 
   const handleIngredientChange = (index, field, value) => {
@@ -26,18 +31,23 @@ const RecipeForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const recipe = { dishName, ingredients, price: parseFloat(price) };
 
     try {
-      const response = await axios.post("http://localhost:5000/task/updatemenu", recipe); // Replace with your backend endpoint
+      const response = await axios.post(
+        "http://localhost:5000/task/updatemenu",
+        recipe
+      ); // Replace with your backend endpoint
       setMessage(`Recipe added: ${response.data.dishName}`);
       setDishName("");
-      setIngredients([{ ingredientName: "", quantity: "" }]);
+      setIngredients([{ ingredientName: "", quantity: "", unit:"" }]);
       setPrice("");
     } catch (error) {
       console.error(error);
-      setMessage("Error adding recipe. Please try again.");
+      setMessage("Error adding recipe");
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -65,17 +75,18 @@ const RecipeForm = () => {
         <div>
           <h5 className="font-medium text-gray-700">Ingredients</h5>
           {ingredients.map((ingredient, index) => (
-            <div
-              key={index}
-              className="flex items-center space-x-2 mb-3"
-            >
+            <div key={index} className="flex items-center space-x-2 mb-3">
               <input
                 type="text"
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:outline-none"
                 placeholder="Ingredient Name"
                 value={ingredient.ingredientName}
                 onChange={(e) =>
-                  handleIngredientChange(index, "ingredientName", e.target.value)
+                  handleIngredientChange(
+                    index,
+                    "ingredientName",
+                    e.target.value
+                  )
                 }
                 required
               />
@@ -88,14 +99,19 @@ const RecipeForm = () => {
                   handleIngredientChange(index, "quantity", e.target.value)
                 }
                 required
+                min="0"
               />
-              <button
-                type="button"
-                className="px-3 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
-                onClick={() => handleRemoveIngredient(index)}
-              >
-                Remove
-              </button>
+              <input
+                type="text"
+                className="w-24 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:outline-none"
+                placeholder="Unit"
+                value={ingredient.unit}
+                onChange={(e) =>
+                  handleIngredientChange(index, "unit", e.target.value)
+                }
+                required
+              />
+              <XCircleIcon className="h-7 w-7 cursor-pointer" color="red" onClick={() => handleRemoveIngredient(index)}/>
             </div>
           ))}
           <button
@@ -126,11 +142,12 @@ const RecipeForm = () => {
         <button
           type="submit"
           className="w-full px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
+          disabled={isSubmitting}
         >
-          Submit Recipe
+          {!isSubmitting? "Submit Recipe" : "Submitting"}
         </button>
         {message && (
-          <div className="mt-4 p-4 text-white bg-blue-500 rounded-md">
+          <div className="mt-4 p-3 text-white bg-red-500 rounded-md">
             {message}
           </div>
         )}

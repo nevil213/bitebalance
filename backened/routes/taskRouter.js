@@ -1,5 +1,5 @@
 const express = require('express');
-const { getNotifications } = require('../controller/NotificationController');
+const { getNotifications, clearNotification } = require('../controller/NotificationController');
 const { getAllOrders, placeOrder } = require('../controller/orderController');
 const { getmenu, savedish } = require('../controller/MenuController');
 const { getInventory, updateInventory } = require('../controller/InventoryController');
@@ -24,7 +24,8 @@ router.get('/adminorders',getAllOrders);
 
 router.get('/Inventory',getInventory);
 
-router.get('/fetch',getNotifications)
+router.get('/getNotifications',getNotifications)
+router.delete('/clearNotification/:name',clearNotification)
 router.get('/', (req, res) => {
     res.send('API is running');
   });

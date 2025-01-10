@@ -15,7 +15,8 @@ exports.getNotifications = async (req, res) => {
 // Clear a Notification
 exports.clearNotification = async (req, res) => {
   try {
-    const { ingredientName } = req.params;
+    const ingredientName = req.params['name'];
+    console.log(req.params)
 
     const deletedNotification = await Notification.findOneAndDelete({ ingredientName });
     if (!deletedNotification) {

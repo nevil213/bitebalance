@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import StaffDashboard from './pages/StaffDashboard';
 import RecipeForm from './components/ReciepePage';
 import InventoryManagement from './components/InventoryManagement';
+import NotificationsPage from './pages/NotificationsPage';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
     <Route path="/dashboard" element={<StaffDashboard />} />
     <Route path="/ReciepePage" element={<RecipeForm />} />
     <Route path="/Inventory"  element={< InventoryManagement />} />
+    <Route path="/Notification"  element={< NotificationsPage />} />
     {/* <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <CustomerRegister />} /> */}
 
     </Routes>
