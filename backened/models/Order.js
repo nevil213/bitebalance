@@ -5,8 +5,8 @@ const orderSchema = new mongoose.Schema({
   // customerName: { type: String, required: true },          // Name of the customer
   dish: { type: String, required: true },                  // Name of the dish ordered
   quantity: { type: Number, required: true, min: 1 },
-  price: { type: Number, required: true, min: 0 }
-  ,      // Quantity of the dish
+  // price: { type: Number, required: true, min: 0 }
+  // ,      // Quantity of the dish
   date: { type: Date, default: Date.now },                 // Date of the order
   // status: {                                                // Order status
   //   type: String, 

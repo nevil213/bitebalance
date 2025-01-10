@@ -9,7 +9,7 @@ function Footer() {
           {/* Impact Statement */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold tracking-tight text-gray-900">
-              Your final impact statement goes here. Make it memorable!
+              Smart Inventory, Seamless Efficiency!
             </h3>
           </div>
 
@@ -18,9 +18,8 @@ function Footer() {
             <div className="flex items-start space-x-3">
               <MapPin className="w-5 h-5 text-gray-600 mt-1" />
               <div>
-                <p className="text-gray-600">Add your location</p>
-                <p className="text-gray-600">123 Anywhere St.,</p>
-                <p className="text-gray-600">Any City, ST 12345</p>
+                <p className="text-gray-600">SVNIT Surat</p>
+                <p className="text-gray-600">Surat, 395007</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">

@@ -4,15 +4,15 @@ const inventory = require ('../models/inventory');
 const order = require ('../models/Order');
 const Recipes = require('../models/Recipes');
 const Notification = require('../models/Notification');
-// const Notification = require('../models/notificationSchema');
 
 // Place a New Order
 exports.placeOrder = async (req, res) => {
   try {
-    const { orderId, dish, quantity, price } = req.body;
+    const { orderId, dish, quantity } = req.body;
   
     // Check if recipe exists for the dish
     const recipe = await Recipes.findOne({ dishName: dish });
+
     if (!recipe) {
       return res.status(404).json({ error: `Recipe for ${dish} not found.` });
     }
@@ -21,24 +21,26 @@ exports.placeOrder = async (req, res) => {
     for (const ingredient of recipe.ingredients) {
       const inventoryItem = await inventory.findOne({ ingredientName: ingredient.ingredientName });
 
+
       if (!inventoryItem) {
-        return res.status(404).json({ error: `Ingredient ${ingredient.ingredientName} not found in inventory.` });
+        return res.status(404).json({ 
+          error: `Ingredient ${ingredient.ingredientName} not found in inventory.` 
+        });
       }
 
       const requiredStock = ingredient.quantity * quantity; // Ingredient needed for the order
       if (inventoryItem.stock < requiredStock) {
-        return res.status(400).json({ error: `Insufficient stock for ${ingredient.ingredientName}.` });
+        return res.status(400).json({ message: `Insufficient stock for ${ingredient.ingredientName}.` });
       }
 
       // Deduct the stock
       inventoryItem.stock -= requiredStock;
       inventoryItem.lastUpdated = new Date();
-      // console.log('shahil');
-      console.log(inventoryItem.stock);
+      
       // Update low-stock notifications
       if (inventoryItem.stock < inventoryItem.threshold) {
-        // res.send(`Stock for ${inventoryItem.ingredientName} is below threshold.`);
-        console.log('shahil');
+        res.send(`Stock for ${inventoryItem.ingredientName} is below threshold.`);
+
         const existingNotification = await Notification.findOne({ ingredientName: ingredient.ingredientName });
 
         if (!existingNotification) {

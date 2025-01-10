@@ -16,18 +16,18 @@ exports.getmenu = async (req, res) => {
 
 exports.savedish = async (req, res) => {
     try {
-        const data = req.body;
+        // const data = req.body;
         const newRecipe = await Recipe.create(
-        {
-            dishName: data.dishName,
-            ingredients: data.ingredients,
-            price: data.price,
-        }
-        );
+        // {
+        //     // dishName: data.dishName,
+        //     // ingredients: data.ingredients,
+        //     // price: data.price,
+        // }
+         req.body);
         const newMenu = await Menu.create(
         {
-            dishName: data.dishName,
-            price: data.price,
+            name: req.body.dishName,
+            price: req.body.price,
         }
         );
     

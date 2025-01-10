@@ -1,8 +1,8 @@
 const express = require('express');
 const { getNotifications } = require('../controller/NotificationController');
 const { getAllOrders, placeOrder } = require('../controller/orderController');
-const { getmenu } = require('../controller/MenuController');
-const { getInventory } = require('../controller/InventoryController');
+const { getmenu, savedish } = require('../controller/MenuController');
+const { getInventory, updateInventory } = require('../controller/InventoryController');
 const router = express.Router();
 
 // router.use(express.json());
@@ -13,14 +13,16 @@ const router = express.Router();
 // const {getInventory,updateInventory,} = require('../controller/InventoryController');
 // const {getNotifications,clearNotification} = require('../controller/NotificationController');
 // const orderController = require('../controller/orderController');
+
 router.post('/orderplaced',placeOrder);
 
 router.get('/menu',getmenu);
 
+router.post('/updatemenu',savedish);
+
 router.get('/adminorders',getAllOrders);
 
-router.get('/inventory',getInventory);
-
+router.get('/Inventory',getInventory);
 
 router.get('/fetch',getNotifications)
 router.get('/', (req, res) => {

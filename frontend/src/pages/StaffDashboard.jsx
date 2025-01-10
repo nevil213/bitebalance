@@ -24,7 +24,7 @@ function StaffDashboard() {
 
   const fetchMenu = async () => {
     try {
-      const response = await fetch('/api/menu')
+      const response = await fetch('http://localhost:5000/task/menu')
       const data = await response.json()
       setMenu(data)
     } catch (error) {
@@ -35,7 +35,7 @@ function StaffDashboard() {
   const handlePlaceOrder = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('/api/orders', {
+      const response = await fetch('http://localhost:5000/task/orderplaced', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
