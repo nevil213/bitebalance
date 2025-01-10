@@ -4,7 +4,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md fixed w-full top-0">
+    <header className="bg-white shadow-md fixed w-full top-0 relative">
       <div className="container mx-auto px-4 py-2 flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <img src="./images/logo.png" alt="Logo" className="h-8 w-auto" />
