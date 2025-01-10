@@ -1,7 +1,6 @@
-// const Inventory = require('../models/inventorySchema');
-// const Notification = require('../models/notificationSchema');
 const db = require('../database');
 const Inventory = require('../models/inventory');
+const Notification = require('../models/Notification');
 
 // Get Inventory Status
 exports.getInventory = async (req, res) => {
@@ -16,19 +15,20 @@ exports.getInventory = async (req, res) => {
 // Update Inventory (Restock)
 exports.updateInventory = async (req, res) => {
   try {
-    const { ingredientName, newStock } = req.body;
+    const { _id, stock, threshold } = req.body;
 
-    const inventoryItem = await Inventory.findOne({ ingredientName });
+    const inventoryItem = await Inventory.findOne({ _id });
     if (!inventoryItem) {
-      return res.status(404).json({ error: `${ingredientName} not found in inventory.` });
+      return res.status(404).json({ error: `selected item not found in inventory.` });
     }
 
-    inventoryItem.stock = newStock;
+    inventoryItem.stock = stock;
+    inventoryItem.threshold = threshold;
     inventoryItem.lastUpdated = new Date();
 
     // Clear low-stock notification if stock is now sufficient
     if (inventoryItem.stock >= inventoryItem.threshold) {
-      await Notification.findOneAndDelete({ ingredientName });
+      await Notification.findOneAndDelete({ ingredientName: inventoryItem.ingredientName });
     }
 
     await inventoryItem.save();
@@ -37,7 +37,3 @@ exports.updateInventory = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// module.exports = {
-
-// }

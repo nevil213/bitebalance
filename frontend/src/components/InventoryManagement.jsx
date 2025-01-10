@@ -10,6 +10,11 @@ const InventoryManagement = () => {
     threshold: "",
   });
   const [message, setMessage] = useState("");
+  const [editableItemId, setEditableItemId] = useState(null);
+  const [editableFields, setEditableFields] = useState({
+    stock: "",
+    threshold: "",
+  });
 
   // Fetch Inventory
   useEffect(() => {
@@ -28,6 +33,11 @@ const InventoryManagement = () => {
   // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle Editable Fields Change
+  const handleEditableChange = (e) => {
+    setEditableFields({ ...editableFields, [e.target.name]: e.target.value });
   };
 
   // Handle Add Item
@@ -60,6 +70,29 @@ const InventoryManagement = () => {
     }
   };
 
+  // Handle Update Inventory
+  const handleUpdateInventory = (_id, stock, threshold) => {
+    setEditableItemId(_id);
+    setEditableFields({ stock, threshold });
+  };
+
+  // Handle Save Update
+  const handleSaveUpdate = async (id) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/task/updateInventory`, {
+        _id: id,
+        stock: parseInt(editableFields.stock),
+        threshold: parseInt(editableFields.threshold),
+      });
+      setInventory(inventory.map((item) => (item._id === id ? response.data : item)));
+      setEditableItemId(null);
+      setMessage("Item updated successfully!");
+    } catch (error) {
+      console.error("Error updating item:", error);
+      setMessage("Error updating item.");
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold text-center mb-6">Inventory Management</h1>
@@ -83,17 +116,56 @@ const InventoryManagement = () => {
               {inventory.map((item) => (
                 <tr key={item._id} className="border border-gray-300">
                   <td className="px-4 py-2">{item.ingredientName}</td>
-                  <td className="px-4 py-2">{item.stock}</td>
+                  <td className="px-4 py-2">
+                    {editableItemId === item._id ? (
+                      <input
+                        type="number"
+                        name="stock"
+                        value={editableFields.stock}
+                        onChange={handleEditableChange}
+                        className="border border-gray-300 p-2 rounded-md"
+                      />
+                    ) : (
+                      item.stock
+                    )}
+                  </td>
                   <td className="px-4 py-2">{item.unit}</td>
-                  <td className="px-4 py-2">{item.threshold}</td>
+                  <td className="px-4 py-2">
+                    {editableItemId === item._id ? (
+                      <input
+                        type="number"
+                        name="threshold"
+                        value={editableFields.threshold}
+                        onChange={handleEditableChange}
+                        className="border border-gray-300 p-2 rounded-md"
+                      />
+                    ) : (
+                      item.threshold
+                    )}
+                  </td>
                   <td className="px-4 py-2">{new Date(item.lastUpdated).toLocaleString()}</td>
                   <td className="px-4 py-2">
-                    <button
+                    {editableItemId === item._id ? (
+                      <button
+                        className="bg-green-500 text-white px-4 py-1 rounded-md hover:bg-green-600"
+                        onClick={() => handleSaveUpdate(item._id)}
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600"
+                        onClick={() => handleUpdateInventory(item._id, item.stock, item.threshold)}
+                      >
+                        Update
+                      </button>
+                    )}
+                    {/* <button
                       className="bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600"
                       onClick={() => handleDelete(item._id)}
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

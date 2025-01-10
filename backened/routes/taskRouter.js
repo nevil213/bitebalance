@@ -20,6 +20,8 @@ router.get('/menu',getmenu);
 
 router.post('/updatemenu',savedish);
 
+router.put('/updateInventory',updateInventory);
+
 router.get('/adminorders',getAllOrders);
 
 router.get('/Inventory',getInventory);
